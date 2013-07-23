@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -40,6 +41,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 
 public class PagerSlidingTabStrip extends HorizontalScrollView {
 
@@ -66,6 +68,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int tabCount;
 
 	private int currentPosition = 0;
+	private int selectedPosition = 0;
 	private float currentPositionOffset = 0f;
 
 	private Paint rectPaint;
@@ -88,7 +91,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	private int dividerWidth = 1;
 
 	private int tabTextSize = 12;
-	private int tabTextColor = 0xFF666666;
+	private ColorStateList tabTextColor = ColorStateList.valueOf(0xFF666666);
 	private Typeface tabTypeface = null;
 	private int tabTypefaceStyle = Typeface.BOLD;
 
@@ -132,8 +135,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 		TypedArray a = context.obtainStyledAttributes(attrs, ATTRS);
 
 		tabTextSize = a.getDimensionPixelSize(0, tabTextSize);
-		tabTextColor = a.getColor(1, tabTextColor);
-
+		tabTextColor = a.getColorStateList(1);
+		if (tabTextColor == null) {
+			tabTextColor = ColorStateList.valueOf(0xFF666666);
+		}
 		a.recycle();
 
 		// get custom attrs
@@ -169,6 +174,10 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			locale = getResources().getConfiguration().locale;
 		}
 	}
+
+    public void setTabContainerGravity(int gravity) {
+        tabsContainer.setGravity(gravity);
+    }
 
 	public void setViewPager(ViewPager pager) {
 		this.pager = pager;
@@ -356,6 +365,12 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		rectPaint.setColor(indicatorColor);
 
+		// select the selected tab
+		for (int i = 0; i < tabsContainer.getChildCount(); i++) {
+			View tab = tabsContainer.getChildAt(i);
+			tab.setSelected(i == selectedPosition);
+		}
+		
 		// default: line below current tab
 		View currentTab = tabsContainer.getChildAt(currentPosition);
 		float lineLeft = currentTab.getLeft();
@@ -421,6 +436,9 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 			if (delegatePageListener != null) {
 				delegatePageListener.onPageSelected(position);
 			}
+			selectedPosition = position;
+
+            invalidate();
 		}
 
 	}
@@ -530,16 +548,16 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 	}
 
 	public void setTextColor(int textColor) {
-		this.tabTextColor = textColor;
+		this.tabTextColor = ColorStateList.valueOf(textColor);
 		updateTabStyles();
 	}
 
 	public void setTextColorResource(int resId) {
-		this.tabTextColor = getResources().getColor(resId);
+		this.tabTextColor = getResources().getColorStateList(resId);
 		updateTabStyles();
 	}
 
-	public int getTextColor() {
+	public ColorStateList getTextColor() {
 		return tabTextColor;
 	}
 

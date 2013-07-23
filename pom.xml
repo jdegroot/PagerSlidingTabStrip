@@ -12,7 +12,7 @@
 
     <groupId>com.astuetz.pagerslidingtabstrip</groupId>
     <artifactId>pagerslidingtabstrip-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0.20130723</version>
     <packaging>pom</packaging>
 
     <name>PagerSlidingTabStrip (Parent)</name>
@@ -80,6 +80,11 @@
                         <lazyLibraryUnpack>true</lazyLibraryUnpack>
                     </configuration>
                 </plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.2.1</version>
+				</plugin>
             </plugins>
         </pluginManagement>
     </build>
