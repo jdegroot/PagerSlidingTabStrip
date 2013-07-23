@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.astuetz.pagerslidingtabstrip</groupId>
 		<artifactId>pagerslidingtabstrip-parent</artifactId>
-		<version>1.0.0.20130625</version>
+		<version>1.0.0.20130723b</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
