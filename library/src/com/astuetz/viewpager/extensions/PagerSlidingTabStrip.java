@@ -356,6 +356,12 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
 		rectPaint.setColor(indicatorColor);
 
+		// select the selected tab
+		for (int i = 0; i < tabsContainer.getChildCount(); i++) {
+			View tab = tabsContainer.getChildAt(i);
+			tab.setSelected(i == selectedPosition);
+		}
+		
 		// default: line below current tab
 		View currentTab = tabsContainer.getChildAt(currentPosition);
 		float lineLeft = currentTab.getLeft();
